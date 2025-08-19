@@ -1,0 +1,274 @@
+
+
+<style>
+  /* ===== Tailwind拡張: アニメーション定義 ===== */
+  .animate-gradient-shift { background-size: 200% 200%; }
+
+  /* 雲の個別消失方向（CSS変数で方向を与える） */
+  .cloud-1 { --disappear-x: -120px; --disappear-y: -80px; }
+  .cloud-2 { --disappear-x: 100px;  --disappear-y: -60px; }
+  .cloud-3 { --disappear-x: 160px;  --disappear-y: 80px; }
+  .cloud-4 { --disappear-x: 160px;  --disappear-y: -40px; }
+  .cloud-5 { --disappear-x: -120px; --disappear-y: 40px; }
+
+  /* 任意のアニメーション遅延ユーティリティ */
+  .delay-100  { animation-delay: 0.1s; }
+  .delay-200  { animation-delay: 0.2s; }
+  .delay-400  { animation-delay: 0.4s; }
+  .delay-600  { animation-delay: 0.6s; }
+  .delay-800  { animation-delay: 0.8s; }
+  .delay-1000 { animation-delay: 1s;   }
+  .delay-1200 { animation-delay: 1.2s; }
+  .delay-1500 { animation-delay: 1.5s; }
+  .delay-2000 { animation-delay: 2s;   }
+
+  .sparkle-1 { animation-delay: 0s;   }
+  .sparkle-2 { animation-delay: 0.5s; }
+  .sparkle-3 { animation-delay: 1s;   }
+  .sparkle-4 { animation-delay: 1.5s; }
+  .sparkle-5 { animation-delay: 2s;   }
+
+  /* --- Keyframes --- */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes cloudFloat {
+    0%,100% { transform: translateY(0px); }
+    50%     { transform: translateY(-10px); }
+  }
+  @keyframes cloudDisappear {
+    from { opacity: 1; transform: scale(1) translate(0, 0); }
+    to   { opacity: 0; transform: scale(0.3) translate(var(--disappear-x, 100px), var(--disappear-y, -50px)); }
+  }
+  @keyframes sunRise {
+    from { opacity: 0; transform: scale(0); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+  @keyframes sparkleGlow {
+    0%,100% { opacity: 0.4; transform: scale(1) rotate(0deg); }
+    50%     { opacity: 1;   transform: scale(1.3) rotate(180deg); }
+  }
+  @keyframes gradientShift {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  @keyframes floatGentleKF {
+    0%,100% { transform: translateY(0px) translateX(0px) scale(1); }
+    50%     { transform: translateY(-20px) translateX(10px) scale(1.1); }
+  }
+  @keyframes floatSlowKF {
+    0%,100% { transform: translateY(0px) translateX(0px) scale(1); }
+    50%     { transform: translateY(15px) translateX(-8px) scale(0.9); }
+  }
+  @keyframes floatFastKF {
+    0%,100% { transform: translateY(0px) translateX(0px) scale(1); }
+    50%     { transform: translateY(-10px) translateX(5px) scale(1.1); }
+  }
+
+  /* Tailwind ユーティリティ風のクラス名に実体を付与 */
+  .animate-fade-in-up      { animation: fadeInUp 1s ease-out forwards; }
+  .animate-cloud-float     { animation: cloudFloat 4s ease-in-out infinite; }
+  .animate-cloud-disappear { animation: cloudDisappear 2s ease-out forwards; }
+  .animate-sun-rise        { animation: sunRise 1s ease-out forwards; }
+  .animate-sparkle-glow    { animation: sparkleGlow 3s ease-in-out infinite; }
+  .animate-gradient        { animation: gradientShift 4s ease-in-out infinite; }
+
+  .animate-float-gentle { animation: floatGentleKF 4s ease-in-out infinite; }
+  .animate-float-slow   { animation: floatSlowKF   5s ease-in-out infinite; }
+  .animate-float-fast   { animation: floatFastKF   6s ease-in-out infinite; }
+</style>
+
+<div class="min-h-screen bg-gradient-to-br from-slate-400 via-slate-300 to-slate-200 flex items-center justify-center relative overflow-hidden">
+  <!-- 雲レイヤー -->
+  <div id="clouds-layer" class="absolute inset-0 z-10">
+    <!-- 雲1 - 左上 -->
+    <div class="cloud-1 absolute -top-20 -left-20 w-96 h-64 bg-white/90 rounded-full blur-sm animate-cloud-float"></div>
+
+    <!-- 雲2 - 中央 -->
+    <div class="cloud-2 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-48 bg-white/95 rounded-full blur-sm animate-cloud-float delay-100"></div>
+
+    <!-- 雲3 - 右下 -->
+    <div class="cloud-3 absolute -bottom-20 -right-20 w-72 h-44 bg-white/85 rounded-full blur-sm animate-cloud-float delay-200"></div>
+
+    <!-- 雲4 - 右上 -->
+    <div class="cloud-4 absolute top-1/4 right-1/4 w-40 h-24 bg-white/80 rounded-full blur-sm animate-cloud-float delay-400"></div>
+
+    <!-- 雲5 - 左下 -->
+    <div class="cloud-5 absolute bottom-1/4 left-1/3 w-32 h-20 bg-white/75 rounded-full blur-sm animate-cloud-float delay-600"></div>
+  </div>
+
+  <!-- 晴れた背景 -->
+  <div id="clear-sky" class="absolute inset-0 bg-gradient-to-br from-sky-200 via-blue-100 to-indigo-100 opacity-0 transition-opacity duration-1500"></div>
+
+  <!-- 太陽 -->
+  <div id="sun" class="absolute top-16 right-16 w-24 h-24 bg-gradient-to-br from-yellow-300 to-orange-400 rounded-full opacity-0 scale-0 transition-all duration-1000 z-20 md:top-20 md:right-20">
+    <div class="w-full h-full rounded-full animate-pulse bg-yellow-200/50"></div>
+  </div>
+
+  <!-- 太陽の光の輪 -->
+  <div id="sun-glow" class="absolute top-16 right-16 w-24 h-24 opacity-0 transition-opacity duration-500 z-15 md:top-20 md:right-20">
+    <div class="absolute inset-0 rounded-full bg-yellow-300/30 animate-ping"></div>
+  </div>
+
+  <!-- メインタイトルセクション -->
+  <div id="title-section" class="relative z-30 text-center opacity-0 px-4">
+    <h1 id="main-title" class="text-5xl md:text-6xl lg:text-8xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-3 md:mb-4 animate-gradient">
+      Mochibe.
+    </h1>
+
+    <p id="subtitle" class="text-base md:text-lg lg:text-xl text-gray-600 opacity-0 transition-all duration-800">
+      あなたのモチベーションを見つけよう
+    </p>
+  </div>
+
+  <!-- キラキラエフェクト -->
+  <div id="sparkles-container" class="absolute inset-0 z-25 pointer-events-none">
+    <div class="sparkle-1 absolute top-1/3 left-1/4 text-yellow-400 text-2xl opacity-0">
+      <span class="inline-block">✨</span>
+    </div>
+    <div class="sparkle-2 absolute top-1/2 right-1/3 text-yellow-400 text-xl opacity-0">
+      <span class="inline-block">✨</span>
+    </div>
+    <div class="sparkle-3 absolute bottom-1/3 left-1/3 text-yellow-400 text-2xl opacity-0">
+      <span class="inline-block">✨</span>
+    </div>
+    <div class="sparkle-4 absolute top-3/4 right-1/4 text-yellow-300 text-sm opacity-0">
+      <span class="inline-block">✨</span>
+    </div>
+    <div class="sparkle-5 absolute top-1/4 left-2/3 text-yellow-400 text-base opacity-0">
+      <span class="inline-block">✨</span>
+    </div>
+  </div>
+
+  <!-- 浮遊装飾要素 -->
+  <div id="floating-elements" class="absolute inset-0 z-20 pointer-events-none">
+    <div class="absolute top-[16%] left-[16%] w-4 h-4 bg-gradient-to-r from-blue-300 to-purple-400 rounded-full opacity-0 transition-opacity duration-1000">
+      <div class="w-full h-full rounded-full animate-float-gentle"></div>
+    </div>
+    <div class="absolute bottom-[16%] right-[16%] w-3 h-3 bg-gradient-to-r from-pink-300 to-yellow-400 rounded-full opacity-0 transition-opacity duration-1000 delay-500">
+      <div class="w-full h-full rounded-full animate-float-slow"></div>
+    </div>
+    <div class="absolute top-2/3 left-[8%] w-2 h-2 bg-gradient-to-r from-indigo-300 to-blue-400 rounded-full opacity-0 transition-opacity duration-1000 delay-1000">
+      <div class="w-full h-full rounded-full animate-float-fast"></div>
+    </div>
+    <div class="absolute top-[20%] right-1/3 w-3 h-3 bg-gradient-to-r from-green-300 to-teal-400 rounded-full opacity-0 transition-opacity duration-1000 delay-1200">
+      <div class="w-full h-full rounded-full animate-float-gentle" style="animation-delay: 1s;"></div>
+    </div>
+    <div class="absolute bottom-1/4 left-1/5 w-2 h-2 bg-gradient-to-r from-purple-300 to-pink-400 rounded-full opacity-0 transition-opacity duration-1000 delay-1500">
+      <div class="w-full h-full rounded-full animate-float-slow" style="animation-delay: 2s;"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // TopPageアニメーション制御クラス
+  class TopPageAnimation {
+    constructor() {
+      this.phases = {
+        title: 500,            // タイトル表示
+        subtitle: 1200,        // サブタイトル表示
+        cloudsDisappear: 3000, // 雲が消える
+        clearSky: 4000,        // 晴れた空
+        sun: 4200,             // 太陽登場
+        sunGlow: 4500,         // 太陽の光
+        sparkles: 4800,        // キラキラ開始
+        floatingElements: 6000 // 浮遊要素表示
+      };
+
+      this.elements = {
+        titleSection: document.getElementById('title-section'),
+        subtitle: document.getElementById('subtitle'),
+        cloudsLayer: document.getElementById('clouds-layer'),
+        clearSky: document.getElementById('clear-sky'),
+        sun: document.getElementById('sun'),
+        sunGlow: document.getElementById('sun-glow'),
+        sparkles: document.querySelectorAll('[class*="sparkle-"]'),
+        floatingElements: document.querySelectorAll('#floating-elements > div')
+      };
+
+      this.startAnimation();
+    }
+
+    startAnimation() {
+      // フェーズ1: タイトル表示
+      setTimeout(() => {
+        this.elements.titleSection.style.opacity = '1';
+        this.elements.titleSection.classList.add('animate-fade-in-up');
+      }, this.phases.title);
+
+      // フェーズ2: サブタイトル表示
+      setTimeout(() => {
+        this.elements.subtitle.style.opacity = '1';
+      }, this.phases.subtitle);
+
+      // フェーズ3: 雲を消す
+      setTimeout(() => {
+        this.disappearClouds();
+      }, this.phases.cloudsDisappear);
+
+      // フェーズ4: 晴れた空
+      setTimeout(() => {
+        this.elements.clearSky.style.opacity = '1';
+      }, this.phases.clearSky);
+
+      // フェーズ5: 太陽登場
+      setTimeout(() => {
+        this.elements.sun.style.opacity = '1';
+        this.elements.sun.classList.add('animate-sun-rise');
+      }, this.phases.sun);
+
+      // フェーズ6: 太陽の光
+      setTimeout(() => {
+        this.elements.sunGlow.style.opacity = '0.6';
+      }, this.phases.sunGlow);
+
+      // フェーズ7: キラキラ効果
+      setTimeout(() => {
+        this.showSparkles();
+      }, this.phases.sparkles);
+
+      // フェーズ8: 浮遊要素
+      setTimeout(() => {
+        this.showFloatingElements();
+      }, this.phases.floatingElements);
+    }
+
+    disappearClouds() {
+      const clouds = this.elements.cloudsLayer.children;
+      Array.from(clouds).forEach((cloud, index) => {
+        setTimeout(() => {
+          cloud.classList.add('animate-cloud-disappear');
+        }, index * 200);
+      });
+    }
+
+    showSparkles() {
+      this.elements.sparkles.forEach((sparkle, index) => {
+        setTimeout(() => {
+          sparkle.style.opacity = '1';
+          sparkle.classList.add('animate-sparkle-glow');
+        }, index * 400);
+      });
+    }
+
+    showFloatingElements() {
+      this.elements.floatingElements.forEach((element, index) => {
+        setTimeout(() => {
+          element.style.opacity = '0.8';
+        }, index * 300);
+      });
+    }
+  }
+
+  // DOM読み込み完了後にアニメーション開始
+  document.addEventListener('DOMContentLoaded', () => {
+    new TopPageAnimation();
+  });
+
+  // レスポンシブ用に必要ならここで調整
+  window.addEventListener('resize', () => {
+    // スマホ/タブレット用の追加調整があればここに
+  });
+</script>
