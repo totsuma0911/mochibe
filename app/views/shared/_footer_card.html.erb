@@ -1,0 +1,35 @@
+<div class="rounded-2xl bg-white/55 backdrop-blur-md shadow-lg ring-1 ring-white/40 px-6 py-4">
+  <!-- 4等分 & 等間隔 -->
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-x-30 gap-y-3 text-sm text-gray-700 items-start">
+
+    <!-- 1) ブランド（2行固定） -->
+    <div class="grid grid-rows-2 gap-1">
+      <h3 class="text-lg font-bold text-sky-700 leading-none">Mochibe.</h3>
+      <p class="text-xs text-gray-600 leading-none whitespace-nowrap">モチベーションを見つける毎日へ</p>
+    </div>
+
+    <!-- 2) サポート（2行固定 / リンクは横並び） -->
+    <div class="grid grid-rows-2 gap-1">
+      <h4 class="font-semibold leading-none">サポート</h4>
+      <div class="flex items-center gap-5 whitespace-nowrap">
+        <a href="#" class="hover:underline">プライバシー</a>
+        <a href="#" class="hover:underline">お問い合わせ</a>
+      </div>
+    </div>
+
+    <!-- 3) フォロー（2行固定 / リンクは横並び） -->
+    <div class="grid grid-rows-2 gap-1">
+      <h4 class="font-semibold leading-none">フォローする</h4>
+      <div class="flex items-center gap-5 whitespace-nowrap">
+        <a href="#" class="hover:text-sky-600">Twitter</a>
+        <a href="#" class="hover:text-sky-600">GitHub</a>
+      </div>
+    </div>
+
+    <!-- 4) コピーライト（2行固定 / 右下揃え） -->
+      <div class="justify-self-end self-end text-[11px] text-gray-600/90">
+        &copy; <%= Time.current.year %> Mochibe. All rights reserved.
+      </div>
+
+  </div>
+</div>

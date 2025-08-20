@@ -1,0 +1,101 @@
+/* ===== Tailwind拡張: アニメーション定義 ===== */
+.animate-gradient-shift { background-size: 200% 200%; }
+
+/* 雲の個別消失方向 */
+.cloud-1 { --disappear-x: -120px; --disappear-y: -80px; }
+.cloud-2 { --disappear-x: 100px;  --disappear-y: -60px; }
+.cloud-3 { --disappear-x: 160px;  --disappear-y: 80px; }
+.cloud-4 { --disappear-x: 160px;  --disappear-y: -40px; }
+.cloud-5 { --disappear-x: -120px; --disappear-y: 40px; }
+
+/* アニメーション遅延ユーティリティ */
+.delay-100  { animation-delay: 0.1s; }
+.delay-200  { animation-delay: 0.2s; }
+.delay-400  { animation-delay: 0.4s; }
+.delay-600  { animation-delay: 0.6s; }
+.delay-800  { animation-delay: 0.8s; }
+.delay-1000 { animation-delay: 1s;   }
+.delay-1200 { animation-delay: 1.2s; }
+.delay-1500 { animation-delay: 1.5s; }
+.delay-2000 { animation-delay: 2s;   }
+
+.sparkle-1 { animation-delay: 0s; }
+.sparkle-2 { animation-delay: 0.5s; }
+.sparkle-3 { animation-delay: 1s; }
+.sparkle-4 { animation-delay: 1.5s; }
+.sparkle-5 { animation-delay: 2s; }
+
+/* --- Keyframes --- */
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes cloudFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+@keyframes cloudDisappear {
+  from { opacity: 1; transform: scale(1) translate(0, 0); }
+  to { opacity: 0; transform: scale(0.3) translate(var(--disappear-x, 100px), var(--disappear-y, -50px)); }
+}
+@keyframes sunRise { from { opacity: 0; transform: scale(0); } to { opacity: 1; transform: scale(1); } }
+@keyframes sparkleGlow {
+  0%,100% { opacity: 0.4; transform: scale(1) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1.3) rotate(180deg); }
+}
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+@keyframes floatGentleKF {
+  0%,100% { transform: translateY(0) translateX(0) scale(1); }
+  50% { transform: translateY(-20px) translateX(10px) scale(1.1); }
+}
+@keyframes floatSlowKF {
+  0%,100% { transform: translateY(0) translateX(0) scale(1); }
+  50% { transform: translateY(15px) translateX(-8px) scale(0.9); }
+}
+@keyframes floatFastKF {
+  0%,100% { transform: translateY(0) translateX(0) scale(1); }
+  50% { transform: translateY(-10px) translateX(5px) scale(1.1); }
+}
+
+/* アニメーションユーティリティ */
+.animate-fade-in-up      { animation: fadeInUp 1s ease-out forwards; }
+.animate-cloud-float     { animation: cloudFloat 4s ease-in-out infinite; }
+.animate-cloud-disappear { animation: cloudDisappear 2s ease-out forwards; }
+.animate-sun-rise        { animation: sunRise 1s ease-out forwards; }
+.animate-sparkle-glow    { animation: sparkleGlow 3s ease-in-out infinite; }
+.animate-gradient        { animation: gradientShift 4s ease-in-out infinite; }
+.animate-float-gentle    { animation: floatGentleKF 4s ease-in-out infinite; }
+.animate-float-slow      { animation: floatSlowKF 5s ease-in-out infinite; }
+.animate-float-fast      { animation: floatFastKF 6s ease-in-out infinite; }
+
+
+/*太陽アニメーション */
+.sun-circle {
+  width: 96px;
+  height: 96px;
+  border-radius: 9999px;
+  /* 自然な太陽の色味（中心明るめ→外側オレンジ） */
+  background: radial-gradient(circle at 35% 35%,
+    #fff7c2 0%,
+    #ffe066 38%,
+    #ffb703 68%,
+    #f59e0b 100%
+  );
+
+  /* やわらかいグロー（外側の光） */
+  box-shadow:
+    0 0 60px 20px rgba(255, 200, 0, 0.35),
+    0 0 120px 50px rgba(255, 200, 0, 0.18);
+
+  opacity: 0;
+  transform: scale(0.92) translateZ(0); /* 初期は少し小さく */
+  transition: opacity 800ms ease, transform 800ms ease;
+
+  /* チラつき対策 */
+  will-change: opacity, transform;
+  backface-visibility: hidden;
+}
+
+/* JSで可視化するときに付与するクラス */
+.sun-visible {
+  opacity: 1;
+  transform: scale(1) translateZ(0);
+}

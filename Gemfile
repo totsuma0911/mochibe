@@ -31,7 +31,7 @@ gem "solid_queue"
 gem "solid_cable"
 
 # Reduces boot times through caching; required in config/boot.rb
-gem "bootsnap", require: false
+gem "bootsnap", '>= 1.4.4', require: false
 
 # Deploy this application anywhere as a Docker container [https://kamal-deploy.org]
 gem "kamal", require: false
@@ -41,6 +41,12 @@ gem "thruster", require: false
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
+gem "sorcery"
+#認証機能
+gem "dotenv-rails"
+#環境変数管理
+gem "httparty"
+#Open AI　API用
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
@@ -57,6 +63,11 @@ group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
 end
+
+group :development, :test do
+  gem 'pry-rails'       # デバッグ用
+end
+
 
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]

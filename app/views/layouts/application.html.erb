@@ -7,9 +7,15 @@
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
   </head>
-  <body class="overflow-hidden">
+
+  <!-- ↓ overflow-hidden をやめて、縦フレックス＋最低高さを付与 -->
+  <body class="min-h-screen flex flex-col">
     <%= render "shared/header" %>
-    <%= yield %>
-    <%= render "shared/footer" %>
+
+    <!-- ↓ ここで yield を main で包む（中身がヒーロー） -->
+    <main class="flex-1 relative z-0">
+      <%= yield %>
+    </main>
+
   </body>
 </html>

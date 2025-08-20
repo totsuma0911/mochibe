@@ -1,8 +1,48 @@
-<header class="w-full p-4 bg-indigo-600 text-white">
-  <div class="max-w-5xl mx-auto flex items-center justify-between">
-    <h1 class="font-bold">Mochibe.</h1>
-    <nav class="text-sm opacity-90"> <!-- 必要ならリンク追加 -->
-      <!-- <%= link_to "Home", root_path %> -->
-    </nav>
-  </div>
+<header class="fixed top-[40px] left-[40px] z-50">
+  <button id="menu-btn"
+          class="fixed top-[24px] left-[24px] z-50 focus:outline-none"
+          aria-label="メニューを開く">
+    <!-- 雲と三本線を“同じSVG”で描画：常に中央揃え -->
+    <svg viewBox="0 0 96 64" class="w-28 h-20 drop-shadow-lg">
+      <!-- 雲 -->
+      <path fill="white"
+        d="M28 52h40c10 0 18-8 18-18s-8-18-18-18c-1 0-3 .1-4 .4C62 9 55 4 47 4c-9 0-16 5-18 13-1-.2-2-.3-3-.3C16 16 8 24 8 34s8 18 20 18z"/>
+      <!-- メニュー（三本線）: SVG中心(48,32)基準で描画 -->
+      <g transform="translate(48 32)">
+        <rect x="-16" y="-10" width="32" height="4" rx="2" fill="#38bdf8"/>
+        <rect x="-16" y="-2"  width="32" height="4" rx="2" fill="#38bdf8"/>
+        <rect x="-16" y="6"   width="32" height="4" rx="2" fill="#38bdf8"/>
+      </g>
+    </svg>
+  </button>
 </header>
+
+
+<!-- オーバーレイ -->
+<div id="menu-overlay"
+     class="fixed inset-0 bg-black/40 opacity-0 pointer-events-none transition-opacity duration-200 z-40"></div>
+
+<!-- スライドメニュー（左から） -->
+<nav id="mobile-menu"
+     class="fixed top-0 left-0 h-full w-72 max-w-[85vw] bg-white text-gray-800
+            -translate-x-full transition-transform duration-300 z-50 shadow-xl">
+  <div class="flex items-center justify-between px-4 h-12 border-b">
+    <span class="font-semibold text-sky-700">Mochibe.</span>
+    <button id="menu-close" class="p-2 rounded hover:bg-gray-100" aria-label="閉じる">
+      <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" d="M6 6l12 12M18 6l-12 12"/>
+      </svg>
+    </button>
+  </div>
+
+  <ul class="px-4 py-3 space-y-1 text-sm">
+    <li><%= link_to "トップ", root_path, class: "block px-2 py-2 rounded hover:bg-gray-100" %></li>
+    <li><a href="#" class="block px-2 py-2 rounded hover:bg-gray-100">機能一覧</a></li>
+    <li><a href="#" class="block px-2 py-2 rounded hover:bg-gray-100">よくある質問</a></li>
+    <li><a href="#" class="block px-2 py-2 rounded hover:bg-gray-100">お問い合わせ</a></li>
+
+    <li class="pt-3 mt-3 border-t text-xs text-gray-500">ポリシー</li>
+    <li><a href="#" class="block px-2 py-2 rounded hover:bg-gray-100">利用規約</a></li>
+    <li><a href="#" class="block px-2 py-2 rounded hover:bg-gray-100">プライバシー</a></li>
+  </ul>
+</nav>
