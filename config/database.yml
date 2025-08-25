@@ -1,21 +1,22 @@
-default: &default               # 共通の設定に「default」という名前(アンカー)を付けて再利用するため
-  adapter: postgresql           # Railsが使うデータベースはPostgreSQLだよ、という指定
-  encoding: unicode             # 文字コードはUTF-8相当。日本語も安心して保存できる
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>  # 同時接続の上限。Railsのスレッド数に合わせ、未設定なら5
-  host: db                      # 接続先ホスト名。Docker Composeのサービス名(db)でコンテナ間DNSが引ける
-  username: postgres            # DBのユーザー名（Composeの環境変数と合わせる）
-  password: password            # DBのパスワード（同じくCompose側と合わせる）
+default:
+  &default # 共通の設定に「default」という名前(アンカー)を付けて再利用するため
+  adapter: postgresql # Railsが使うデータベースはPostgreSQLだよ、という指定
+  encoding: unicode # 文字コードはUTF-8相当。日本語も安心して保存できる
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %> # 同時接続の上限。Railsのスレッド数に合わせ、未設定なら5
+  host: db # 接続先ホスト名。Docker Composeのサービス名(db)でコンテナ間DNSが引ける
+  username: postgres # DBのユーザー名（Composeの環境変数と合わせる）
+  password: password # DBのパスワード（同じくCompose側と合わせる）
 
 development:
-  <<: *default                  # さっきの共通設定(*default)を丸ごと継承（YAMLのアンカー/エイリアス）
+  <<: *default # さっきの共通設定(*default)を丸ごと継承（YAMLのアンカー/エイリアス）
   database: mochibe_development # 開発用の“実際のDB名”。環境ごとに分けてデータ混ざりを防ぐ
 
 test:
   <<: *default
-  database: mochibe_test        # テスト用のDB名。RSpecなどがここを使って安全に試験できる
+  database: mochibe_test # テスト用のDB名。RSpecなどがここを使って安全に試験できる
 
 production:
   <<: *default
-  database: mochibe_production  # 本番用のDB名。運用データはここに入る
-  username: <%= ENV["POSTGRES_USER"] || "postgres" %>     # 本番資格情報は環境変数から受け取る(直書きしない)。無ければ予備値
+  database: mochibe_production # 本番用のDB名。運用データはここに入る
+  username: <%= ENV["POSTGRES_USER"] || "postgres" %> # 本番資格情報は環境変数から受け取る(直書きしない)。無ければ予備値
   password: <%= ENV["POSTGRES_PASSWORD"] || "password" %> # 同上。秘密はENVで安全に渡すのが基本

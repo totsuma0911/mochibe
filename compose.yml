@@ -14,10 +14,10 @@ services: # コンテナの定義開始
       interval: 10s # チェック間隔
       timeout: 5s # タイムアウト時間
       retries: 5 # リトライ回数
-      
+
   web: # Railsアプリケーションの設定
     build: # Dockerイメージのビルド設定
-      context: .  # ビルドコンテキストはカレントディレクトリ
+      context: . # ビルドコンテキストはカレントディレクトリ
       dockerfile: Dockerfile.dev # 開発用Dockerfileを使用
     command: bash -c "bundle install && bundle exec rails db:prepare && rm -f tmp/pids/server.pid && ./bin/dev"
     # ↑ サーバー起動時のコマンド：
@@ -28,7 +28,7 @@ services: # コンテナの定義開始
 
     tty: true # 疑似ターミナルを割り当て
     stdin_open: true # 標準入力を保持
-    volumes:  # ボリュームマウントの設定
+    volumes: # ボリュームマウントの設定
       - .:/myapp # ソースコードのマウント
       - bundle_data:/usr/local/bundle:cached # gemの永続化
       - node_modules:/myapp/node_modules # node_modulesの永続化
