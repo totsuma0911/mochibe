@@ -1,0 +1,17 @@
+<%= form_with model: [@chat_session, Message.new], data: { turbo_stream: true }, id: "message-form" do |f| %>
+  <div class="flex items-center gap-2">
+    <%= f.text_area :content,                        # メッセージ本文の入力欄
+          rows: 1, 
+          placeholder: "今日はどんな気分？",          # 入力前に表示されるガイド文
+          class: "flex-grow rounded-lg border p-2" %>
+
+    <%= f.hidden_field :sender, value: "user" %>     # 誰が送ったかをDBに保存（ここは常にユーザー固定）
+
+    <%= f.submit "送信",                             # 送信ボタン
+          class: "px-4 py-2 bg-blue-500 text-white rounded-lg" %>
+  </div>
+
+  <% if @message&.errors.any? %>                      <!-- バリデーション失敗時（空送信など）のエラー表示 -->
+    <p class="text-red-500 text-sm mt-1"><%= @message.errors.full_messages.to_sentence %></p>
+  <% end %>
+<% end %>

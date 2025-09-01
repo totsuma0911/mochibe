@@ -1,0 +1,3 @@
+<%= turbo_stream.append "messages" do %>  <!-- id="messages" の要素に新しいメッセージを追加 -->
+  <%= render @message %>                  <!-- 部分テンプレート(_message.html.erb)で1件分を描画 -->
+<% end %>

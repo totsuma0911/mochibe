@@ -1,0 +1,9 @@
+<h1 class="text-xl font-bold mb-4">チャット</h1>
+
+<!-- メッセージ一覧を表示する箱 -->
+<div id="messages" class="space-y-2 mb-4">
+  <%= render @chat_session.messages %>   <!-- Messageモデルを1件ずつ部分テンプレート(_message)で描画 -->
+</div>
+
+<!-- メッセージ送信フォーム -->
+<%= render "messages/form", chat_session: @chat_session %>
