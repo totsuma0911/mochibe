@@ -1,0 +1,9 @@
+<div class="flex <%= message.sender == "user" ? "justify-end" : "justify-start" %>"> <!-- 外枠: flexコンテナ。送信者(user/ai)によって左右寄せを切り替える -->
+  
+  <div class="<%= message.sender == "user" ? # 吹き出し本体: 送信者(user/ai)によって背景色をグラデーションで変える
+    'bg-gradient-to-r from-pink-400 to-pink-500 text-white rounded-lg px-4 py-2 max-w-xs' : 
+    'bg-gradient-to-r from-purple-400 to-purple-600 text-white rounded-lg px-4 py-2 max-w-xs' %>">
+      <%= message.content %> <!-- メッセージ本文を表示 -->
+  </div>
+  
+</div>
