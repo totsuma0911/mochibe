@@ -1,9 +1,14 @@
-<h1 class="text-xl font-bold mb-4">チャット</h1>
+<div class="min-h-screen bg-gradient-to-b from-sky-400 via-sky-200 to-white">
+  <h1 class="text-xl font-bold mb-4">分析ページ</h1>
 
-<!-- メッセージ一覧を表示する箱 -->
-<div id="messages" class="space-y-2 mb-4">
-  <%= render @chat_session.messages %>   <!-- Messageモデルを1件ずつ部分テンプレート(_message)で描画 -->
+<div class="max-w-2xl mx-auto border rounded-lg p-4 h-96 overflow-y-scroll" data-controller="chat"> <!-- chatコントローラを適用 -->
+  <div id="messages" data-chat-target="messages" class="space-y-2 mb-4"> <!-- messagesをターゲットに指定 -->
+    <% @messages.each do |message| %> <!-- 1件ずつのMessageを取り出して処理するループ -->
+      <%= render message %> <!-- 取り出したmessageを部分テンプレート(_message.html.erb)で描画 -->
+    <% end %>
+  </div>
 </div>
 
-<!-- メッセージ送信フォーム -->
-<%= render "messages/form", chat_session: @chat_session %>
+<div class="max-w-2xl mx-auto px-4"> <!-- メッセージ送信フォーム -->
+  <%= render "messages/form", chat_session: @chat_session %>
+</div>

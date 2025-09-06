@@ -17,15 +17,12 @@
       あなたのモチベーションを見つけよう
     </h2>
 
-    <a href="#"
-       class="inline-flex items-center justify-center rounded-full px-6 py-3
-              text-sm font-semibold text-white
-              bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-500
-              hover:from-indigo-500 hover:via-purple-500 hover:to-pink-600
-              transition shadow-md
-              animate-fade-up anim-delay-400">
-      分析を始める
-    </a>
+    <%= link_to "分析を始める",
+            chat_session_path(@chat_session),
+            class: "inline-flex items-center justify-center rounded-full 
+            px-6 py-3 text-sm font-semibold text-white bg-gradient-to-r 
+            from-indigo-400 via-purple-400 to-pink-500 hover:from-indigo-500 
+            hover:via-purple-500 hover:to-pink-600 transition shadow-md animate-fade-up anim-delay-400" %>
   </div>
 </section>
 

@@ -1,14 +1,25 @@
-<%= form_with model: [@chat_session, Message.new], data: { turbo_stream: true }, id: "message-form" do |f| %>
+<%= form_with model: [@chat_session, Message.new],
+              data: { 
+                controller: "message",        # 🟢 追加: Stimulusのコントローラ名を指定
+                action: "keydown->message#submitOnEnter", # 🟢 追加: keydownイベントでメソッド呼び出し
+                turbo_stream: true            # 🟡 これは元からあった（位置を少し整理）
+              }, 
+              id: "message-form" do |f| %>
+
   <div class="flex items-center gap-2">
     <%= f.text_area :content,                        # メッセージ本文の入力欄
           rows: 1, 
           placeholder: "今日はどんな気分？",          # 入力前に表示されるガイド文
-          class: "flex-grow rounded-lg border p-2" %>
+          class: "flex-grow rounded-lg border p-2 h-10 placeholder-gray-500" %>
 
-    <%= f.hidden_field :sender, value: "user" %>     # 誰が送ったかをDBに保存（ここは常にユーザー固定）
+    <%= f.hidden_field :sender, value: "user" %>     <!-- 誰が送ったかをDBに保存（ここは常にユーザー固定）-->
 
     <%= f.submit "送信",                             # 送信ボタン
-          class: "px-4 py-2 bg-blue-500 text-white rounded-lg" %>
+           class: "px-4 py-2 text-white rounded-lg font-bold
+          bg-gradient-to-r from-purple-400 via-pink-400 to-pink-500
+          transition transform 
+          hover:scale-105 hover:brightness-110
+          active:scale-95 cursor-pointer" %>
   </div>
 
   <% if @message&.errors.any? %>                      <!-- バリデーション失敗時（空送信など）のエラー表示 -->
