@@ -130,4 +130,3 @@ UI改善 / モチベーションの可視化デザイン強化
 https://www.figma.com/design/T3eiyymlIOOQOuFc7KWPlL/%E7%84%A1%E9%A1%8C?node-id=0-1&p=f&t=z9IFG4wlNbdU1EPP-0
 
 ## ER図
-[![Image from Gyazo](https://i.gyazo.com/2f761698cd820cefa54967f1277698c5.png)](https://gyazo.com/2f761698cd820cefa54967f1277698c5)
