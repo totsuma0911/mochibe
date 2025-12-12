@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
   resources :chat_sessions, only: %i[show create] do   # チャットセッション(一覧/詳細/作成)
     resources :messages, only: %i[create]                    #   メッセージ投稿
+    resource :analysis, only: %i[show]                       #   分析結果
   end
 end
 

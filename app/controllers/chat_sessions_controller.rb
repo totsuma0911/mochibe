@@ -1,4 +1,6 @@
 class ChatSessionsController < ApplicationController
+  rescue_from ActiveRecord::RecordNotFound, with: :redirect_to_home
+
   def show
     @chat_session = ChatSession.find(params[:id])   # URLのidから、その日のチャットセッションを特定
     @messages = @chat_session.messages              # そのセッションに紐づいている全メッセージを取得
@@ -13,5 +15,10 @@ class ChatSessionsController < ApplicationController
       redirect_to chat_sessions_path, alert: "分析を開始できませんでした" # 保存に失敗したら一覧へ戻して、エラーメッセージを表示
     end
   end
-  
+
+  private
+
+  def redirect_to_home
+    redirect_to root_path, alert: "セッションが見つかりませんでした。新しい分析を始めてください。"
+  end
 end
