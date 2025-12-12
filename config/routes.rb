@@ -10,6 +10,8 @@ Rails.application.routes.draw do
     resources :messages, only: %i[create]                    #   メッセージ投稿
     resource :analysis, only: %i[show]                       #   分析結果
   end
+
+  get "my_analysis", to: "analyses#latest"                   # 最新の分析結果
 end
 
 
