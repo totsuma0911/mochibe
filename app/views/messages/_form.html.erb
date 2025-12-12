@@ -22,7 +22,7 @@
           active:scale-95 cursor-pointer" %>
   </div>
 
-  <% if @message&.errors.any? %>                      <!-- バリデーション失敗時（空送信など）のエラー表示 -->
-    <p class="text-red-500 text-sm mt-1"><%= @message.errors.full_messages.to_sentence %></p>
+  <% if message&.errors.any? %>                      <!-- バリデーション失敗時（空送信など）のエラー表示 -->
+    <p class="text-red-500 text-sm mt-1"><%= message.errors.full_messages.to_sentence %></p>
   <% end %>
 <% end %>

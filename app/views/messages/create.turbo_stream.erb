@@ -1,7 +1,14 @@
-<%= turbo_stream.append "messages" do %>  <!-- id="messages" の要素に新しいメッセージを追加 -->
-  <%= render @message %>                  <!-- 部分テンプレート(_message.html.erb)で1件分を描画 -->
+<%# ユーザーメッセージを追加 %>
+<%= turbo_stream.append "messages" do %>
+  <%= render @user_message %>
 <% end %>
 
-<%= turbo_stream.replace "message-form" do %>  <!-- id="message-form" を空のフォームに置き換え -->
+<%# AIメッセージを追加 %>
+<%= turbo_stream.append "messages" do %>
+  <%= render @ai_message %>
+<% end %>
+
+<%# フォームをリセット %>
+<%= turbo_stream.replace "message-form" do %>
   <%= render "messages/form", chat_session: @chat_session, message: Message.new %>
 <% end %>
