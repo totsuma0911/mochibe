@@ -10,13 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_09_04_121056) do
+ActiveRecord::Schema[7.2].define(version: 2025_12_12_022859) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "chat_sessions", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "guest_id"
+    t.index ["guest_id"], name: "index_chat_sessions_on_guest_id"
   end
 
   create_table "messages", force: :cascade do |t|
