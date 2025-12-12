@@ -50,17 +50,21 @@ class ThreeWhyAiService
 
   # 最終分析結果を生成（Step 4）
   def generate_final_analysis
+    messages_for_api = build_messages_for_analysis
+
     response = @client.chat(
       parameters: {
         model: ENV.fetch('OPENAI_MODEL', 'gpt-4o-mini'),
-        messages: build_messages_for_analysis,
+        messages: messages_for_api,
         temperature: 0.8,
         max_tokens: 800
       }
     )
 
+    content = response.dig('choices', 0, 'message', 'content')
+
     {
-      content: response.dig('choices', 0, 'message', 'content'),
+      content: content,
       step: 4
     }
   end
@@ -123,9 +127,14 @@ class ThreeWhyAiService
   # 最終分析用システムプロンプト
   def system_prompt_for_analysis
     <<~PROMPT
-      あなたは3WHY分析の専門家です。3回の深掘り対話を通じて、ユーザーの悩みの根本原因を特定します。
+      あなたは3WHY分析の専門家です。ユーザーとの3回の深掘り対話は既に完了しました。
 
-      これまでの対話を振り返り、以下の形式で分析結果を提示してください：
+      **【絶対に守ること】**
+      - これ以上質問をしてはいけません
+      - 対話は完了しています
+      - 今は分析結果のみを返してください
+
+      これまでの対話を振り返り、必ず以下の形式で分析結果を提示してください：
 
       【根本原因】
       あなたの悩みの根っこには「○○」があるようです。
@@ -147,12 +156,12 @@ class ThreeWhyAiService
       ーーー
       お疲れさまでした。今日も自分と向き合う時間を作れたこと、素晴らしいです。
 
-      【重要】
-      - 表面的な励ましではなく、本質的な洞察を提供する
-      - ユーザーが自分で答えを見つけられるよう、気づきを促す
-      - 具体的で、明日から実践できるアクションを提案する
+      **【最重要】**
+      - 絶対に質問をしないでください
+      - 必ず上記の形式（【根本原因】【気づき】【まとめ】【アクション】）で始めてください
+      - 表面的な励ましではなく、本質的な洞察を提供してください
+      - 具体的で、明日から実践できるアクションを提案してください
       - 温かく、でも核心を突いた分析を
-      - 必ず上記の形式（【根本原因】【気づき】【まとめ】【アクション】）を守ってください
     PROMPT
   end
 

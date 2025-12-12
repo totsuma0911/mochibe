@@ -10,15 +10,16 @@ export default class extends Controller {
   static targets = ["messages"]
 
   connect() {
-    console.log("✅ ChatController connected")
-    // 初期表示時に最下部へ
+    // 初期表示時に最下部へ & 背景設定
     this.scrollToBottom()
+    this.updateBackground()
 
-    // メッセージの子要素追加を監視して、そのたびにスクロール
+    // メッセージの子要素追加を監視して、そのたびにスクロール & 背景更新
     this._observer = new MutationObserver((mutations) => {
       for (const m of mutations) {
         if (m.type === "childList" && m.addedNodes && m.addedNodes.length > 0) {
           this.scrollToBottom()
+          this.updateBackground()
           break
         }
       }
@@ -63,5 +64,50 @@ export default class extends Controller {
         console.warn("scrollToBottom でエラー:", e)
       }
     })
+  }
+
+  /**
+   * 背景を更新する処理（曇り空 → 快晴）
+   * - メッセージの最新stepに応じて背景グラデーションを変更
+   */
+  updateBackground() {
+    if (!this.hasMessagesTarget) return
+
+    // 全メッセージから最新のstepを取得
+    const messages = this.messagesTarget.querySelectorAll('[data-message-step]')
+    let currentStep = 0
+
+    if (messages.length > 0) {
+      const lastMessage = messages[messages.length - 1]
+      currentStep = parseInt(lastMessage.dataset.messageStep || 0)
+    }
+
+    this.setBackgroundForStep(currentStep)
+  }
+
+  /**
+   * stepに応じた背景クラスを設定
+   */
+  setBackgroundForStep(step) {
+    const bgClasses = {
+      0: ['bg-gradient-to-b', 'from-gray-300', 'via-gray-200', 'to-gray-100'],     // 曇り空
+      1: ['bg-gradient-to-b', 'from-gray-200', 'via-blue-100', 'to-white'],        // 少し晴れ
+      2: ['bg-gradient-to-b', 'from-blue-100', 'via-sky-100', 'to-white'],         // 晴れてきた
+      3: ['bg-gradient-to-b', 'from-sky-200', 'via-sky-100', 'to-white'],          // もうすぐ快晴
+      4: ['bg-gradient-to-b', 'from-sky-400', 'via-sky-200', 'to-white']           // 快晴！
+    }
+
+    // 全ての背景クラスを削除
+    const allBgClasses = [
+      'bg-gradient-to-b',
+      'from-gray-300', 'from-gray-200', 'from-blue-100', 'from-sky-200', 'from-sky-400',
+      'via-gray-200', 'via-blue-100', 'via-sky-100', 'via-sky-200',
+      'to-gray-100', 'to-white'
+    ]
+    this.element.classList.remove(...allBgClasses)
+
+    // 新しい背景クラスを追加
+    const newClasses = bgClasses[step] || bgClasses[0]
+    this.element.classList.add(...newClasses)
   }
 }

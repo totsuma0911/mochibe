@@ -25,7 +25,7 @@
           🎯 根本原因
         </h2>
         <div class="text-gray-800 leading-relaxed whitespace-pre-wrap">
-          <%= simple_format(@analysis.root_cause, {}, sanitize: false) %>
+          <%= simple_format(@analysis.root_cause) %>
         </div>
       </div>
 
@@ -38,7 +38,7 @@
           💡 気づき
         </h2>
         <div class="text-gray-800 leading-relaxed whitespace-pre-wrap">
-          <%= simple_format(@analysis.insights, {}, sanitize: false) %>
+          <%= simple_format(@analysis.insights) %>
         </div>
       </div>
 
@@ -51,7 +51,7 @@
           📝 まとめ
         </h2>
         <div class="text-gray-800 leading-relaxed whitespace-pre-wrap">
-          <%= simple_format(@analysis.summary, {}, sanitize: false) %>
+          <%= simple_format(@analysis.summary) %>
         </div>
       </div>
 
@@ -64,7 +64,7 @@
           ✨ 今日から試せること
         </h2>
         <div class="text-gray-800 leading-relaxed whitespace-pre-wrap">
-          <%= simple_format(@analysis.actions, {}, sanitize: false) %>
+          <%= simple_format(@analysis.actions) %>
         </div>
       </div>
 

@@ -1,9 +1,22 @@
-<div class="flex <%= message.sender == "user" ? "justify-end" : "justify-start" %>">
+<div class="flex <%= message.sender == "user" ? "justify-end" : "justify-start" %>"
+     data-message-step="<%= message.step || 0 %>">
 
   <div class="<%= message.sender == "user" ?
     'bg-gradient-to-r from-pink-400 to-pink-500 text-white rounded-lg px-4 py-3 max-w-xs md:max-w-md' :
-    'bg-gradient-to-r from-purple-400 to-purple-600 text-white rounded-lg px-5 py-4 max-w-lg md:max-w-2xl whitespace-pre-wrap leading-relaxed' %>">
-      <%= simple_format(message.content, {}, sanitize: false) %>
+    'bg-gradient-to-r from-purple-400 to-purple-600 text-white rounded-lg px-5 py-4 max-w-lg md:max-w-2xl leading-relaxed' %>">
+      <div class="whitespace-pre-wrap">
+        <%= simple_format(message.content) %>
+      </div>
+
+      <%# Step 4のAIメッセージの場合のみボタンを表示 %>
+      <% if message.step == 4 && message.sender == "ai" %>
+        <div class="mt-4 text-center">
+          <%= link_to chat_session_analysis_path(message.chat_session),
+                class: 'inline-block px-6 py-3 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-white font-bold transition-all duration-200 transform hover:scale-105 hover:shadow-lg whitespace-nowrap' do %>
+            👉 分析結果を見る
+          <% end %>
+        </div>
+      <% end %>
   </div>
 
 </div>

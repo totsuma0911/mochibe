@@ -30,11 +30,14 @@ class MessagesController < ApplicationController
 
     # Step 4（最終分析）の場合、Analysisレコードを作成
     if response_data[:step] == 4
-      # AI応答全文からAnalysisレコードを作成
-      create_analysis_from_response(response_data[:content])
+      # AI応答全文を別変数に保存（確実に元の内容を保持）
+      full_analysis_content = response_data[:content].to_s.dup
 
-      # チャット画面には簡潔なメッセージとボタンだけを表示
-      response_data[:content] = "お疲れさまでした！3WHY分析が完了しました。\n\n<a href='#{chat_session_analysis_path(@chat_session)}' class='inline-block mt-4 px-6 py-3 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-white font-bold transition-all duration-200 transform hover:scale-105 hover:shadow-lg'>👉 分析結果を見る</a>"
+      # AI応答全文からAnalysisレコードを作成
+      create_analysis_from_response(full_analysis_content)
+
+      # チャット画面には簡潔なメッセージのみ表示（ボタンはビューで追加）
+      response_data[:content] = "お疲れさまでした！3WHY分析が完了しました。"
     end
 
     # AI応答をメッセージとして保存
