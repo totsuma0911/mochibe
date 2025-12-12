@@ -1,21 +1,48 @@
-<!-- ヘッダー部分：ハンバーガーメニューを含む既存デザインと統一したスタイル設定-->
-
 <header class="flex items-center justify-between p-4 bg-transparent shadow-md" data-controller="menu">
-  <!-- ハンバーガーメニューボタン（雲背景付き） -->
-  <div class="relative">
-    <!-- 雲背景 -->
-    <div class="absolute -inset-2 rounded-2xl bg-gradient-to-br from-white/70 via-white/40 to-transparent backdrop-blur-md shadow-md"></div>
-    <!-- ハンバーガーボタン -->
-    <button data-action="click->menu#toggle" 
-            data-menu-target="button"
-            class="relative flex flex-col space-y-1.5 focus:outline-none hover:opacity-70 transition-opacity cursor-pointer p-2"
-            aria-label="メニューを開く">
-      <span class="block w-6 h-0.5 bg-gray-800 transition-all duration-300" data-menu-target="line1"></span>
-      <span class="block w-6 h-0.5 bg-gray-800 transition-all duration-300" data-menu-target="line2"></span>
-      <span class="block w-6 h-0.5 bg-gray-800 transition-all duration-300" data-menu-target="line3"></span>
-    </button>
+  <!-- 左側：ハンバーガー + TOPロゴを横並びで配置 -->
+  <div class="flex items-center gap-4">
+    <!-- ハンバーガーメニューボタン（雲背景付き） -->
+    <div class="relative">
+      <!-- 雲背景 -->
+      <div class="absolute -inset-2 rounded-2xl bg-gradient-to-br from-white/70 via-white/40 to-transparent backdrop-blur-md shadow-md"></div>
+      <!-- ハンバーガーボタン -->
+      <button data-action="click->menu#toggle"
+              data-menu-target="button"
+              class="relative flex flex-col space-y-1.5 focus:outline-none hover:opacity-70 transition-opacity cursor-pointer p-2"
+              aria-label="メニューを開く">
+        <span class="block w-6 h-0.5 bg-gray-800 transition-all duration-300" data-menu-target="line1"></span>
+        <span class="block w-6 h-0.5 bg-gray-800 transition-all duration-300" data-menu-target="line2"></span>
+        <span class="block w-6 h-0.5 bg-gray-800 transition-all duration-300" data-menu-target="line3"></span>
+      </button>
+    </div>
+
+    <!-- HOME画面に遷移するTOPロゴ（左上配置） -->
+    <%= link_to root_path do %>
+      <h1 class="text-xl md:text-2xl font-extrabold tracking-tight
+                 bg-gradient-to-r from-indigo-400 via-fuchsia-400 to-pink-500
+                 text-transparent bg-clip-text whitespace-nowrap">
+        Mochibe.
+      </h1>
+    <% end %>
   </div>
-  
+
+  <!-- 右側：パンくずリスト（モバイルでは非表示） -->
+  <% if breadcrumbs.present? %>
+    <nav class="hidden md:flex items-center text-sm">
+      <% breadcrumbs.each_with_index do |item, index| %>
+        <% if item[:path] %>
+          <%= link_to item[:text], item[:path],
+              class: "text-orange-500 hover:text-orange-600 transition-colors" %>
+        <% else %>
+          <span class="text-orange-500 font-semibold"><%= item[:text] %></span>
+        <% end %>
+        <% if index < breadcrumbs.length - 1 %>
+          <span class="mx-2 text-orange-300">></span>
+        <% end %>
+      <% end %>
+    </nav>
+  <% end %>
+
   <!-- メニューオーバーレイ（背景クリックで閉じる） -->
   <div data-menu-target="overlay" 
        data-action="click->menu#close"
@@ -77,7 +104,7 @@
         <% end %>
         
         <!-- 分析を始める（CTA） -->
-        <%= link_to chat_session_path(@chat_session), 
+        <%= link_to new_analysis_path,
             class: "flex items-center px-6 py-4 text-white bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-500 hover:from-indigo-500 hover:via-purple-500 hover:to-pink-600 mx-4 rounded-lg shadow-md transition-all duration-200 transform hover:scale-105",
             data: { action: "click->menu#close" } do %>
           <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">

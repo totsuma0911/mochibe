@@ -16,6 +16,13 @@ class ChatSessionsController < ApplicationController
     end
   end
 
+  # 新規分析セッションを開始（常に新しいセッションを作成）
+  def new_session
+    guest_id = cookies.permanent[:guest_id] ||= SecureRandom.uuid
+    @chat_session = ChatSession.create!(guest_id: guest_id)
+    redirect_to chat_session_path(@chat_session)
+  end
+
   private
 
   def redirect_to_home

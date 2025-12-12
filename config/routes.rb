@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   end
 
   get "my_analysis", to: "analyses#latest"                   # 最新の分析結果
+  get "new_analysis", to: "chat_sessions#new_session"        # 新規分析開始（常に新しいセッション）
 end
 
 
