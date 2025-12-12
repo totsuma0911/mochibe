@@ -30,7 +30,7 @@ gem "kamal", require: false
 
 gem "thruster", require: false
 
-gem 'sorcery', '0.16.3'
+gem 'sorcery', '0.18.0'
 
 gem 'ruby-openai'
 gem 'dotenv-rails', groups: [:development, :test]
