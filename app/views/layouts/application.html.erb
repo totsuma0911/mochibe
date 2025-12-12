@@ -22,9 +22,11 @@
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>
 
-  <body class="<%= content_for?(:body_class) ? yield(:body_class) : '' %>">
+  <body class="flex flex-col min-h-screen <%= content_for?(:body_class) ? yield(:body_class) : '' %>">
     <%= render "layouts/header" %>
-    <%= yield %>
+    <main class="flex-1 flex flex-col">
+      <%= yield %>
+    </main>
     <%= render "layouts/footer" %>
   </body>
 </html>
