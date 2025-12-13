@@ -16,5 +16,14 @@ test:
   database: mochibe_test # テスト用のDB名。RSpecなどがここを使って安全に試験できる
 
 production:
-  <<: *default
-  url: <%= ENV['DATABASE_URL'] %> # Renderが自動設定するDATABASE_URLを使用
+  primary:
+    <<: *default
+    url: <%= ENV['DATABASE_URL'] %> # Renderが自動設定するDATABASE_URLを使用
+  cable:
+    <<: *default
+    url: <%= ENV['DATABASE_URL'] %> # Solid Cable用（同じDBを使用）
+    migrations_paths: db/cable_migrate
+  queue:
+    <<: *default
+    url: <%= ENV['DATABASE_URL'] %> # Solid Queue用（同じDBを使用）
+    migrations_paths: db/queue_migrate
