@@ -12,7 +12,7 @@ class AnalysesController < ApplicationController
 
   # 最新の分析結果を表示
   def latest
-    guest_id = cookies.permanent[:guest_id] ||= SecureRandom.uuid
+    guest_id = cookies.permanent.signed[:guest_id] ||= SecureRandom.uuid
 
     # 最新のAnalysisが存在するChatSessionを取得
     analysis_session = ChatSession.where(guest_id: guest_id)
@@ -40,7 +40,14 @@ class AnalysesController < ApplicationController
   private
 
   def set_chat_session
+    guest_id = cookies.permanent.signed[:guest_id]
     @chat_session = ChatSession.find(params[:chat_session_id])
+
+    # 自分のセッションか確認（セキュリティ対策）
+    unless @chat_session.guest_id == guest_id
+      redirect_to root_path, alert: "このセッションにはアクセスできません"
+      return
+    end
   end
 
   def redirect_to_home

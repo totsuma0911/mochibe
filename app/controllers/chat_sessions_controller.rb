@@ -2,9 +2,17 @@ class ChatSessionsController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :redirect_to_home
 
   def show
-    @chat_session = ChatSession.find(params[:id])   # URLのidから、その日のチャットセッションを特定
-    @messages = @chat_session.messages              # そのセッションに紐づいている全メッセージを取得
-    @message = Message.new                          # 入力フォーム用の空メッセージを準備
+    guest_id = cookies.permanent.signed[:guest_id]
+    @chat_session = ChatSession.find(params[:id])
+
+    # 自分のセッションか確認（セキュリティ対策）
+    unless @chat_session.guest_id == guest_id
+      redirect_to root_path, alert: "このセッションにはアクセスできません"
+      return
+    end
+
+    @messages = @chat_session.messages
+    @message = Message.new
   end
 
   def create
@@ -18,7 +26,7 @@ class ChatSessionsController < ApplicationController
 
   # 新規分析セッションを開始（常に新しいセッションを作成）
   def new_session
-    guest_id = cookies.permanent[:guest_id] ||= SecureRandom.uuid
+    guest_id = cookies.permanent.signed[:guest_id] ||= SecureRandom.uuid
     @chat_session = ChatSession.create!(guest_id: guest_id)
     redirect_to chat_session_path(@chat_session)
   end

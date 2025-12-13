@@ -1,6 +1,6 @@
 class HomeController < ApplicationController
   def index
-    guest_id = cookies.permanent[:guest_id] ||= SecureRandom.uuid
+    guest_id = cookies.permanent.signed[:guest_id] ||= SecureRandom.uuid
 
     # 最新のセッションを取得
     last_session = ChatSession.where(guest_id: guest_id).last
