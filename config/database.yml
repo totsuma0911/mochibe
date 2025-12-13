@@ -17,6 +17,4 @@ test:
 
 production:
   <<: *default
-  database: mochibe_production # 本番用のDB名。運用データはここに入る
-  username: <%= ENV["POSTGRES_USER"] || "postgres" %> # 本番資格情報は環境変数から受け取る(直書きしない)。無ければ予備値
-  password: <%= ENV["POSTGRES_PASSWORD"] || "password" %> # 同上。秘密はENVで安全に渡すのが基本
+  url: <%= ENV['DATABASE_URL'] %> # Renderが自動設定するDATABASE_URLを使用
