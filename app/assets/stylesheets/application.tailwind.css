@@ -37,6 +37,41 @@
       opacity: 1 !important;
       transform: none !important;
     }
+
+    .first-visit {
+      animation: none !important;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+    }
+  }
+
+  /* 初回訪問時のパルス＋グローアニメーション */
+  .first-visit {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% {
+      transform: scale(1);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    50% {
+      transform: scale(1.15);
+      box-shadow: 0 0 30px rgba(56, 189, 248, 0.8),
+                  0 0 60px rgba(56, 189, 248, 0.4);
+    }
+  }
+
+  /* モーダルのフェードインアニメーション + 完全中央配置 */
+  dialog[open] {
+    animation: fadeIn 0.3s ease-out;
+    position: fixed;
+    inset: 0;
+    margin: auto;
+    max-height: fit-content;
+  }
+
+  dialog::backdrop {
+    animation: fadeIn 0.3s ease-out;
   }
 }
 /* --------------------------------------- 追記ここまで */
