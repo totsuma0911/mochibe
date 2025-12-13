@@ -3,7 +3,7 @@
 /* ここから追記 --------------------------------------- */
 @layer utilities {
   @keyframes fadeUp {
-    /* 0 だと“無の時間”が長く感じるので、0.25 から始めて早めに視認させる */
+    /* 0 だと"無の時間"が長く感じるので、0.25 から始めて早めに視認させる */
     0%   { opacity: .25; transform: translateY(12px); }
     100% { opacity: 1;   transform: translateY(0); }
   }
@@ -15,14 +15,24 @@
     animation: fadeUp 1.4s ease-out forwards;
   }
 
+  /* ウェルカムメッセージ用：よりゆったりしたアニメーション */
+  .animate-fade-up-slow {
+    opacity: 0;
+    will-change: opacity, transform;
+    animation: fadeUp 2.4s ease-out forwards;
+  }
+
   /* 開始タイミングのずらし（クラス名と値を直感的に一致させる） */
     .anim-delay-200 { animation-delay: .6s; }   /* 0.6秒後に開始 */
     .anim-delay-400 { animation-delay: 1.2s; }  /* 1.2秒後に開始 */
     .anim-delay-600 { animation-delay: 1.8s; }  /* 1.8秒後に開始 */
+    .anim-delay-1200 { animation-delay: 1.2s; } /* 1.2秒後に開始（ウェルカムメッセージ用） */
+    .anim-delay-2400 { animation-delay: 2.4s; } /* 2.4秒後に開始（ウェルカムメッセージ用） */
 
   /* 動きを苦手な人向け：アニメ無効で即表示 */
   @media (prefers-reduced-motion: reduce) {
-    .animate-fade-up {
+    .animate-fade-up,
+    .animate-fade-up-slow {
       animation: none !important;
       opacity: 1 !important;
       transform: none !important;

@@ -1,4 +1,4 @@
-<div class="flex <%= message.sender == "user" ? "justify-end" : "justify-start" %>"
+<div class="flex <%= message.sender == "user" ? "justify-end" : "justify-start" %> <%= animation_class_for_welcome(message) %>"
      data-message-step="<%= message.step || 0 %>">
 
   <div class="<%= message.sender == "user" ?

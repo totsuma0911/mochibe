@@ -10,9 +10,16 @@ export default class extends Controller {
   static targets = ["messages"]
 
   connect() {
-    // 初期表示時に最下部へ & 背景設定
-    this.scrollToBottom()
+    // 初期表示時の背景設定
     this.updateBackground()
+
+    // ウェルカムメッセージ（step 0）がある場合は段階的にスクロール
+    if (this.hasWelcomeMessages()) {
+      this.scheduleWelcomeScrolls()
+    } else {
+      // 通常は即座にスクロール
+      this.scrollToBottom()
+    }
 
     // メッセージの子要素追加を監視して、そのたびにスクロール & 背景更新
     this._observer = new MutationObserver((mutations) => {
@@ -33,6 +40,33 @@ export default class extends Controller {
     // フォーム置換などの直後にも一応スクロール（保険）
     this._onTurboSubmitEnd = () => this.scrollToBottom()
     document.addEventListener("turbo:submit-end", this._onTurboSubmitEnd)
+  }
+
+  /**
+   * ウェルカムメッセージ（step 0のAIメッセージ）が存在するかチェック
+   */
+  hasWelcomeMessages() {
+    if (!this.hasMessagesTarget) return false
+
+    const messages = this.messagesTarget.querySelectorAll('[data-message-step="0"]')
+    return messages.length > 0
+  }
+
+  /**
+   * ウェルカムメッセージのアニメーション完了に合わせて段階的にスクロール
+   * - 1つ目: 2.4秒後（0s + 2.4s）
+   * - 2つ目: 3.6秒後（1.2s + 2.4s）
+   * - 3つ目: 4.8秒後（2.4s + 2.4s）
+   */
+  scheduleWelcomeScrolls() {
+    // 1つ目のメッセージ完了時にスクロール
+    setTimeout(() => this.scrollToBottom(), 2400)
+
+    // 2つ目のメッセージ完了時にスクロール
+    setTimeout(() => this.scrollToBottom(), 3600)
+
+    // 3つ目のメッセージ完了時にスクロール
+    setTimeout(() => this.scrollToBottom(), 4800)
   }
 
   disconnect() {
