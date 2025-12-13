@@ -11,3 +11,6 @@ application.register("menu", MenuController)
 
 import MessageController from "./message_controller"
 application.register("message", MessageController)
+
+import ModalController from "./modal_controller"
+application.register("modal", ModalController)
