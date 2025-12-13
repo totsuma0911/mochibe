@@ -1,6 +1,14 @@
 class MessagesController < ApplicationController
   def create
+    guest_id = cookies.permanent.signed[:guest_id]
     @chat_session = ChatSession.find(params[:chat_session_id])  # どのセッションに属するメッセージか特定
+
+    # 自分のセッションか確認（セキュリティ対策）
+    unless @chat_session.guest_id == guest_id
+      redirect_to root_path, alert: "このセッションにはアクセスできません"
+      return
+    end
+
     @user_message = @chat_session.messages.new(message_params)  # ユーザーのメッセージを作成
 
     respond_to do |format|
