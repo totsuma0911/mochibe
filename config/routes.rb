@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check   # ヘルスチェック(/up)
 
   root "home#index"                                          # トップページ
+  get "how_to_use", to: "home#how_to_use"                    # 使い方ガイド
 
   resources :users, only: %i[new create]                     # ユーザー登録
   resources :user_sessions, only: %i[new create destroy]     # ログイン/ログアウト

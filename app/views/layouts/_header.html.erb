@@ -125,7 +125,15 @@
         
         <!-- 区切り線 -->
         <div class="border-t border-gray-200 my-4"></div>
-        
+
+        <!-- 使い方ガイド（CTA） -->
+        <%= link_to how_to_use_path,
+            class: "flex items-center px-6 py-4 text-white bg-gradient-to-r from-yellow-400 to-green-500 hover:from-yellow-500 hover:to-green-600 mx-4 rounded-lg shadow-md transition-all duration-200 transform hover:scale-105",
+            data: { action: "click->menu#close" } do %>
+          <span class="text-xl mr-3">🔰</span>
+          使い方ガイド
+        <% end %>
+
         <!-- 利用規約 -->
         <%= link_to "#", 
             class: "flex items-center px-6 py-4 text-gray-700 hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50 hover:text-indigo-600 transition-all duration-200",
