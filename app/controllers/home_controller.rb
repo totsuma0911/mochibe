@@ -13,4 +13,8 @@ class HomeController < ApplicationController
       @chat_session = last_session || ChatSession.create!(guest_id: guest_id)
     end
   end
+
+  def how_to_use
+    # 使い方ガイドページを表示
+  end
 end
