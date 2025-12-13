@@ -11,9 +11,9 @@ if echo "$@" | grep -q "rails server"; then
   echo "Installing Solid migrations..."
 
   # Install Solid migrations if not already present
-  ./bin/rails solid_queue:install:migrations 2>/dev/null || true
-  ./bin/rails solid_cache:install:migrations 2>/dev/null || true
-  ./bin/rails solid_cable:install:migrations 2>/dev/null || true
+  ./bin/rails solid_queue:install 2>/dev/null || true
+  ./bin/rails solid_cache:install 2>/dev/null || true
+  ./bin/rails solid_cable:install 2>/dev/null || true
 
   echo "Running migrations..."
   # Run all migrations
