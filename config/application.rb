@@ -23,9 +23,9 @@ module Myapp
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
-  end
-end
 
-def
-  Proceed forward
+    # Propshaft: ソースファイルをアセットパイプラインから除外
+    # (ビルド済みファイルのみを配信)
+    config.assets.excluded_paths << Rails.root.join("app/assets/stylesheets")
+  end
 end
