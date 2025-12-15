@@ -3,7 +3,7 @@ class ThreeWhyAiService
 
   def initialize(chat_session)
     @chat_session = chat_session
-    @client = OpenAI::Client.new(access_token: ENV.fetch('OPENAI_API_KEY'))
+    @client = OpenAI::Client.new(access_token: ENV.fetch("OPENAI_API_KEY"))
   end
 
   # ユーザーメッセージに対するAI応答を生成
@@ -35,7 +35,7 @@ class ThreeWhyAiService
   def generate_why_question(step, user_message)
     response = @client.chat(
       parameters: {
-        model: ENV.fetch('OPENAI_MODEL', 'gpt-4o-mini'),
+        model: ENV.fetch("OPENAI_MODEL", "gpt-4o-mini"),
         messages: build_messages_for_question(step),
         temperature: 0.7,
         max_tokens: 300
@@ -43,7 +43,7 @@ class ThreeWhyAiService
     )
 
     {
-      content: response.dig('choices', 0, 'message', 'content'),
+      content: response.dig("choices", 0, "message", "content"),
       step: step + 1
     }
   end
@@ -54,14 +54,14 @@ class ThreeWhyAiService
 
     response = @client.chat(
       parameters: {
-        model: ENV.fetch('OPENAI_MODEL', 'gpt-4o-mini'),
+        model: ENV.fetch("OPENAI_MODEL", "gpt-4o-mini"),
         messages: messages_for_api,
         temperature: 0.8,
         max_tokens: 800
       }
     )
 
-    content = response.dig('choices', 0, 'message', 'content')
+    content = response.dig("choices", 0, "message", "content")
 
     {
       content: content,
@@ -72,15 +72,15 @@ class ThreeWhyAiService
   # 質問生成用のメッセージ履歴を構築
   def build_messages_for_question(step)
     [
-      { role: 'system', content: system_prompt_for_question(step) },
-      *conversation_history,
+      { role: "system", content: system_prompt_for_question(step) },
+      *conversation_history
     ]
   end
 
   # 分析生成用のメッセージ履歴を構築
   def build_messages_for_analysis
     [
-      { role: 'system', content: system_prompt_for_analysis },
+      { role: "system", content: system_prompt_for_analysis },
       *conversation_history
     ]
   end
@@ -89,7 +89,7 @@ class ThreeWhyAiService
   def conversation_history
     @chat_session.messages.order(:created_at).map do |message|
       {
-        role: message.sender == 'user' ? 'user' : 'assistant',
+        role: message.sender == "user" ? "user" : "assistant",
         content: message.content
       }
     end

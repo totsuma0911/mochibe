@@ -1,5 +1,5 @@
 class AnalysesController < ApplicationController
-  before_action :set_chat_session, only: [:show]
+  before_action :set_chat_session, only: [ :show ]
   rescue_from ActiveRecord::RecordNotFound, with: :redirect_to_home
 
   def show
@@ -46,7 +46,7 @@ class AnalysesController < ApplicationController
     # 自分のセッションか確認（セキュリティ対策）
     unless @chat_session.guest_id == guest_id
       redirect_to root_path, alert: "このセッションにはアクセスできません"
-      return
+      nil
     end
   end
 

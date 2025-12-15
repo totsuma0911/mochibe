@@ -81,16 +81,16 @@ class MessagesController < ApplicationController
   # 構造化されたAI応答をパース
   def parse_structured_analysis(content)
     {
-      root_cause: extract_section(content, '【根本原因】', '【気づき】'),
-      insights: extract_section(content, '【気づき】', '【まとめ】'),
-      summary: extract_section(content, '【まとめ】', '【アクション】'),
-      actions: extract_section(content, '【アクション】', 'ーーー')
+      root_cause: extract_section(content, "【根本原因】", "【気づき】"),
+      insights: extract_section(content, "【気づき】", "【まとめ】"),
+      summary: extract_section(content, "【まとめ】", "【アクション】"),
+      actions: extract_section(content, "【アクション】", "ーーー")
     }
   end
 
   # マーカー間のテキストを抽出
   def extract_section(content, start_marker, end_marker)
-    return '' unless content.include?(start_marker)
+    return "" unless content.include?(start_marker)
 
     start_pos = content.index(start_marker) + start_marker.length
     end_pos = content.index(end_marker, start_pos)
