@@ -54,18 +54,20 @@ export default class extends Controller {
 
   /**
    * ウェルカムメッセージのアニメーション完了に合わせて段階的にスクロール
-   * - 1つ目: 2.4秒後（0s + 2.4s）
-   * - 2つ目: 3.6秒後（1.2s + 2.4s）
-   * - 3つ目: 4.8秒後（2.4s + 2.4s）
+   * - 1つ目: 2.4秒後（0s + 2.4s）→ すぐにゆっくりスクロール開始
+   * - 2つ目: 3.6秒後（1.2s + 2.4s）→ すぐにゆっくりスクロール開始
+   * - 3つ目: 4.8秒後（2.4s + 2.4s）→ すぐにゆっくりスクロール開始
+   *
+   * スクロール自体が5秒かけてゆっくり動くため、読みながらスクロールできる
    */
   scheduleWelcomeScrolls() {
-    // 1つ目のメッセージ完了時にスクロール
+    // 1つ目のメッセージ完了後すぐにゆっくりスクロール
     setTimeout(() => this.scrollToBottom(), 2400)
 
-    // 2つ目のメッセージ完了時にスクロール
+    // 2つ目のメッセージ完了後すぐにゆっくりスクロール
     setTimeout(() => this.scrollToBottom(), 3600)
 
-    // 3つ目のメッセージ完了時にスクロール
+    // 3つ目のメッセージ完了後すぐにゆっくりスクロール
     setTimeout(() => this.scrollToBottom(), 4800)
   }
 
@@ -84,6 +86,7 @@ export default class extends Controller {
    * 実際にスクロールさせる処理
    * - スクロールさせるのは「外枠」（= data-controller="chat" が付いた要素）
    * - requestAnimationFrame で描画反映後に実行してズレを防ぐ
+   * - ウェルカムメッセージの場合は文字を読める速度でじわりじわりスクロール
    */
   scrollToBottom() {
     const box = this.element
@@ -91,13 +94,53 @@ export default class extends Controller {
     // 外枠は h-96 / overflow-y-scroll などでスクロール可能にしておくこと
     requestAnimationFrame(() => {
       try {
-        box.scrollTop = box.scrollHeight
+        // ウェルカムメッセージがある場合は5秒かけてじわりじわりスクロール
+        if (this.hasWelcomeMessages()) {
+          this.smoothScrollTo(box, box.scrollHeight, 5000) // 5秒かけて文字を読みながらスクロール
+        } else {
+          // 通常のメッセージは即座にスクロール
+          box.scrollTop = box.scrollHeight
+        }
         // デバッグしたい時は下のログを有効化
         // console.log("👉 scrollToBottom", { scrollTop: box.scrollTop, scrollHeight: box.scrollHeight })
       } catch (e) {
         console.warn("scrollToBottom でエラー:", e)
       }
     })
+  }
+
+  /**
+   * カスタムスムーススクロール - じわりじわりと滑らかにスクロール
+   * @param {Element} element - スクロールする要素
+   * @param {number} target - 目標のscrollTop位置
+   * @param {number} duration - アニメーション時間（ミリ秒）
+   */
+  smoothScrollTo(element, target, duration) {
+    const start = element.scrollTop
+    const distance = target - start
+    const startTime = performance.now()
+
+    // easeInOutQuad: 最初と最後がゆっくり、中間が少し速い滑らかな動き
+    // 一気に視点が変わらず、読みながらスクロールできる
+    const easeInOutQuad = (t) => {
+      return t < 0.5
+        ? 2 * t * t
+        : 1 - Math.pow(-2 * t + 2, 2) / 2
+    }
+
+    const scroll = (currentTime) => {
+      const elapsed = currentTime - startTime
+      const progress = Math.min(elapsed / duration, 1)
+      const eased = easeInOutQuad(progress)
+
+      element.scrollTop = start + (distance * eased)
+
+      if (progress < 1) {
+        requestAnimationFrame(scroll)
+      }
+    }
+
+    requestAnimationFrame(scroll)
   }
 
   /**
