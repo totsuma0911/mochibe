@@ -81,10 +81,10 @@ class MessagesController < ApplicationController
   # 構造化されたAI応答をパース
   def parse_structured_analysis(content)
     {
-      root_cause: extract_section(content, "【根本原因】", "【気づき】"),
-      insights: extract_section(content, "【気づき】", "【まとめ】"),
-      summary: extract_section(content, "【まとめ】", "【アクション】"),
-      actions: extract_section(content, "【アクション】", "ーーー")
+      root_cause: extract_section(content, "【あなたの気持ちを受け止めて】", "【対話から見えてきたこと】"),
+      insights: extract_section(content, "【対話から見えてきたこと】", "【解決の方向性】"),
+      summary: extract_section(content, "【解決の方向性】", "【試してみてほしいこと】"),
+      actions: extract_section(content, "【試してみてほしいこと】", "ーーー")
     }
   end
 
