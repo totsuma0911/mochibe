@@ -4,7 +4,7 @@ gem "rails", "~> 7.2.2", ">= 7.2.2.2"
 
 gem "propshaft"
 
-gem "pg", "~> 1.1"
+gem "pg", "~> 1.6"
 
 gem "puma", ">= 5.0"
 
