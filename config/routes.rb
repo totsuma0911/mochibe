@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :users, controllers: {omniauth_callbacks: 'users/omniauth_callbacks'}  #devise標準コントローラーではなく、omniauthコントローラーを使用する指示
   get "up" => "rails/health#show", as: :rails_health_check   # ヘルスチェック(/up)
 
   root "home#index"                                          # トップページ
