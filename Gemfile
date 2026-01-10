@@ -30,7 +30,12 @@ gem "kamal", require: false
 
 gem "thruster", require: false
 
-gem "sorcery", "0.16.3"
+gem 'devise'
+
+gem 'omniauth-google-oauth2'
+
+gem 'omniauth-rails_csrf_protection'  # CSRF対策
+
 
 gem "ruby-openai"
 gem "dotenv-rails", groups: [ :development, :test ]

@@ -1,9 +1,8 @@
 class ChatSession < ApplicationRecord
     has_many :messages, dependent: :destroy # 複数のメッセージを持つ（セッション削除時にまとめて削除）
     has_one :analysis, dependent: :destroy # 分析結果を1つ持つ（セッション削除時に削除）
-
-    # セッション作成時に自動でウェルカムメッセージを作成
-    after_create_commit :create_welcome_message
+    belongs_to :user, optional: true #ゲストIDとユーザーIDの両方をサポート
+    after_create_commit :create_welcome_message  # セッション作成時に自動でウェルカムメッセージを作成
 
     private
 
