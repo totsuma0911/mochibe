@@ -9,6 +9,7 @@ default:
 
 development:
   <<: *default # さっきの共通設定(*default)を丸ごと継承（YAMLのアンカー/エイリアス）
+  url: <%= ENV['DATABASE_URL'] %> # Neon PostgreSQLの接続URL。.envファイルに設定されていればこちらを優先
   database: mochibe_development # 開発用の“実際のDB名”。環境ごとに分けてデータ混ざりを防ぐ
 
 test:
