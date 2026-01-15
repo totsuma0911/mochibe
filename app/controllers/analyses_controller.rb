@@ -12,24 +12,21 @@ class AnalysesController < ApplicationController
 
   # 最新の分析結果を表示
   def latest
-    guest_id = cookies.permanent.signed[:guest_id] ||= SecureRandom.uuid
-
-    # 最新のAnalysisが存在するChatSessionを取得
-    analysis_session = ChatSession.where(guest_id: guest_id)
-                                   .joins(:analysis)
-                                   .order(created_at: :desc)
-                                   .first
+    # 最新のAnalysisが存在するChatSessionを取得（ログインユーザーまたはゲスト）
+    analysis_session = current_sessions.joins(:analysis)
+                                        .order(created_at: :desc)
+                                        .first
 
     if analysis_session
       redirect_to chat_session_analysis_path(analysis_session)
     else
       # 分析結果がない場合、分析開始用のChatSessionを準備
-      last_session = ChatSession.where(guest_id: guest_id).last
+      last_session = current_sessions.last
 
       if last_session && last_session.messages.exists?(step: 4)
-        @chat_session = ChatSession.create!(guest_id: guest_id)
+        @chat_session = create_new_session
       else
-        @chat_session = last_session || ChatSession.create!(guest_id: guest_id)
+        @chat_session = last_session || create_new_session
       end
 
       # 専用ページを表示
@@ -40,13 +37,20 @@ class AnalysesController < ApplicationController
   private
 
   def set_chat_session
-    guest_id = cookies.permanent.signed[:guest_id]
     @chat_session = ChatSession.find(params[:chat_session_id])
 
-    # 自分のセッションか確認（セキュリティ対策）
-    unless @chat_session.guest_id == guest_id
+    # 自分のセッションか確認（セキュリティ対策：ログインユーザーまたはゲスト）
+    unless owns_session?(@chat_session)
       redirect_to root_path, alert: "このセッションにはアクセスできません"
       nil
+    end
+  end
+
+  def create_new_session
+    if user_signed_in?
+      ChatSession.create!(user_id: current_user.id)
+    else
+      ChatSession.create!(guest_id: guest_id)
     end
   end
 

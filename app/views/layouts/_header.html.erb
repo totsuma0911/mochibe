@@ -83,25 +83,53 @@
           TOPページ
         <% end %>
         
-        <!-- 新規登録 -->
-        <%= link_to "#", 
-            class: "flex items-center px-6 py-4 text-gray-700 hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50 hover:text-indigo-600 transition-all duration-200",
-            data: { action: "click->menu#close" } do %>
-          <svg class="w-5 h-5 mr-3 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
-          </svg>
-          新規登録
+        <% if user_signed_in? %>
+          <!-- ログイン中の表示 -->
+
+          <!-- マイページ -->
+          <%= link_to edit_user_registration_path,
+              class: "flex items-center px-6 py-4 text-gray-700 hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50 hover:text-indigo-600 transition-all duration-200",
+              data: { action: "click->menu#close" } do %>
+            <svg class="w-5 h-5 mr-3 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+            </svg>
+            マイページ
+          <% end %>
+
+          <!-- ログアウト -->
+          <%= button_to destroy_user_session_path, method: :delete,
+              class: "flex items-center px-6 py-4 text-gray-700 hover:bg-gradient-to-r hover:from-red-50 hover:to-pink-50 hover:text-red-600 transition-all duration-200 w-full text-left",
+              data: { turbo: false, action: "click->menu#close" } do %>
+            <svg class="w-5 h-5 mr-3 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+            </svg>
+            ログアウト
+          <% end %>
+
+        <% else %>
+          <!-- 未ログインの表示 -->
+
+          <!-- ログイン -->
+          <%= link_to new_user_session_path,
+              class: "flex items-center px-6 py-4 text-gray-700 hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50 hover:text-indigo-600 transition-all duration-200",
+              data: { action: "click->menu#close" } do %>
+            <svg class="w-5 h-5 mr-3 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
+            </svg>
+            ログイン
+          <% end %>
+
+          <!-- 新規登録 -->
+          <%= link_to new_user_registration_path,
+              class: "flex items-center px-6 py-4 text-gray-700 hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50 hover:text-indigo-600 transition-all duration-200",
+              data: { action: "click->menu#close" } do %>
+            <svg class="w-5 h-5 mr-3 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+            </svg>
+            新規登録
+          <% end %>
         <% end %>
         
-        <!-- マイページ -->
-        <%= link_to "#", 
-            class: "flex items-center px-6 py-4 text-gray-700 hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50 hover:text-indigo-600 transition-all duration-200",
-            data: { action: "click->menu#close" } do %>
-          <svg class="w-5 h-5 mr-3 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-          </svg>
-          マイページ
-        <% end %>
         
         <!-- 分析を始める（CTA） -->
         <%= link_to new_analysis_path,
