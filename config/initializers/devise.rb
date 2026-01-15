@@ -38,7 +38,7 @@ Devise.setup do |config|
   # available as additional gems.
   require 'devise/orm/active_record'
   
-  if Rails.env.development?
+  unless Rails.env.test?
     config.omniauth :google_oauth2,
                     ENV['GOOGLE_CLIENT_ID'],
                     ENV['GOOGLE_CLIENT_SECRET'],

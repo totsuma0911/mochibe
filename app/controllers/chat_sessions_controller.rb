@@ -2,11 +2,10 @@ class ChatSessionsController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :redirect_to_home
 
   def show
-    guest_id = cookies.permanent.signed[:guest_id]
     @chat_session = ChatSession.find(params[:id])
 
-    # 自分のセッションか確認（セキュリティ対策）
-    unless @chat_session.guest_id == guest_id
+    # 自分のセッションか確認（セキュリティ対策：ログインユーザーまたはゲスト）
+    unless owns_session?(@chat_session)
       redirect_to root_path, alert: "このセッションにはアクセスできません"
       return
     end
@@ -16,18 +15,27 @@ class ChatSessionsController < ApplicationController
   end
 
   def create
-    @chat_session = ChatSession.new                                   # 新しいチャットセッション（本日の箱）を作成
-    if @chat_session.save                                             # 保存できたら
-      redirect_to @chat_session, notice: "本日の分析を開始しました"     # そのセッションの詳細画面に移動して、開始メッセージを表示
+    # ログインユーザーならuser_id、ゲストならguest_idでセッション作成
+    @chat_session = if user_signed_in?
+                      ChatSession.new(user_id: current_user.id)
+                    else
+                      ChatSession.new(guest_id: guest_id)
+                    end
+
+    if @chat_session.save
+      redirect_to @chat_session, notice: "本日の分析を開始しました"
     else
-      redirect_to chat_sessions_path, alert: "分析を開始できませんでした" # 保存に失敗したら一覧へ戻して、エラーメッセージを表示
+      redirect_to root_path, alert: "分析を開始できませんでした"
     end
   end
 
   # 新規分析セッションを開始（常に新しいセッションを作成）
   def new_session
-    guest_id = cookies.permanent.signed[:guest_id] ||= SecureRandom.uuid
-    @chat_session = ChatSession.create!(guest_id: guest_id)
+    @chat_session = if user_signed_in?
+                      ChatSession.create!(user_id: current_user.id)
+                    else
+                      ChatSession.create!(guest_id: guest_id)
+                    end
     redirect_to chat_session_path(@chat_session)
   end
 
